@@ -6,7 +6,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { supabase } from '../lib/supabaseClient';
 import DarkModeButton from './DarkModeButton';
@@ -15,8 +15,18 @@ function NavHeader({ toggleColorMode, colorMode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const drwRef = useRef();
 
+  const user = supabase.auth.user();
   const router = useRouter();
   const [isLoggingOut, setLogOut] = useState(false);
+  const [showLogoutBtn, setShowLogoutBtn] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setShowLogoutBtn(true);
+    } else {
+      setShowLogoutBtn(false);
+    }
+  }, [user]);
 
   const logoutHandler = async () => {
     try {
@@ -29,7 +39,6 @@ function NavHeader({ toggleColorMode, colorMode }) {
       router.push('/auth/signin');
     }
   };
-  const user = supabase.auth.user();
 
   return (
     <Box as='nav' bg='#40df6d' position='sticky' top='0' zIndex='50'>
@@ -54,20 +63,18 @@ function NavHeader({ toggleColorMode, colorMode }) {
               <DarkModeButton />
             </Box>
 
-            <>
-              {user && (
-                <Box>
-                  <IconButton
-                    onClick={logoutHandler}
-                    icon={<AiOutlinePoweroff />}
-                    color='red.500'
-                    bg='red.100'
-                    isRound
-                    isLoading={isLoggingOut}
-                  />
-                </Box>
-              )}
-            </>
+            {showLogoutBtn && (
+              <Box>
+                <IconButton
+                  onClick={logoutHandler}
+                  icon={<AiOutlinePoweroff />}
+                  color='red.500'
+                  bg='red.100'
+                  isRound
+                  isLoading={isLoggingOut}
+                />
+              </Box>
+            )}
 
             {/* <Box display={['block', 'none']}>
               <IconButton

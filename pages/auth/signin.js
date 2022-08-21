@@ -87,10 +87,10 @@ function Signin() {
             flexDir='column'
             rounded='md'>
             <BiMailSend size='32' />
-            <Text textAlign='center' mt='2' fontWeight='semibold' fontSize='20'>
+            <Text textAlign='center' mt='2' fontWeight='semibold' fontSize='23'>
               Check your email box
             </Text>
-            <Text textAlign='center' mt='2'>
+            <Text textAlign='center' mt='2' fontSize='18'>
               Your login link has been sent to {email}
             </Text>
           </Flex>
@@ -107,19 +107,19 @@ function Signin() {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const { user } = await supabase.auth.api.getUserByCookie(req);
-//   if (user) {
-//     return {
-//       props: {},
-//       redirect: {
-//         destination: '/',
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+export async function getServerSideProps({ req }) {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+  if (user) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
 
 export default Signin;

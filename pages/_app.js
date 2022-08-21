@@ -9,6 +9,14 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const user = supabase.auth.user();
 
+  //  useEffect(() => {
+  //    if (user) {
+  //      if (router.pathname === '/auth/signin') {
+  //        router.push('/');
+  //      }
+  //    }
+  //  }, [router, user]);
+
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -35,13 +43,7 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  useEffect(() => {
-    if (user) {
-      if (router.pathname === '/auth/signin') {
-        router.push('/');
-      }
-    }
-  }, [router, user]);
+ 
 
   const handleAuthSession = async (event, session) => {
     await fetch('/api/auth', {

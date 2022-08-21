@@ -91,7 +91,7 @@ export default function Home() {
         <Box>
           <Heading
             textAlign='center'
-            fontSize={['xl', '2xl', '3xl']}
+            fontSize={['2xl', '3xl']}
             fontWeight='semibold'
             mt='6'>
             Notes

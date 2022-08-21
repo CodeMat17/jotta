@@ -18,7 +18,8 @@ dayjs.extend(relativeTime);
 
 function NoteCard({ note }) {
   const router = useRouter();
-  const isCompletedTextColor = useColorModeValue('gray.400', 'gray.600')
+
+  const isCompletedTextColor = useColorModeValue('gray.400', 'gray.600');
   const grayText = useColorModeValue('gray.400', 'gray.500');
   const textColor = useColorModeValue('gray.800', 'gray.300');
 
@@ -40,7 +41,7 @@ function NoteCard({ note }) {
         fontWeight='bold'
         fontSize='xl'
         mt='2'
-        color={note.is_completed ? 'green.700' : 'green'}>
+        color={note.is_completed ? grayText : 'green'}>
         {note?.title}
       </Heading>
       <Tag
@@ -82,14 +83,8 @@ function NoteCard({ note }) {
       <Divider my='4' />
       <HStack>
         <Spacer />
-        <Button
-          onClick={() => router.push(`/note/${note.id}`)}
-          size='sm'
-          fontSize='sm'
-          color='white'
-          bg='green'
-          _hover={{ color: 'green', bg: 'green.100' }}>
-          {note.is_completed ? 'Edit/Remove' : 'See detail'}
+        <Button onClick={() => router.push(`/note/${note.id}`)} colorScheme='green' size='sm' >
+          {note.is_completed ? 'Edit/Remove' : 'See Details'}
         </Button>
       </HStack>
     </Box>

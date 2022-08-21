@@ -9,26 +9,29 @@ import {
   Spacer,
   Tag,
   Text,
+  useColorModeValue,
+  useDisclosure,
   useToast,
-  VStack, useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useEffect, useState, useRef } from 'react';
-import ManageNote from '../../components/ManageNote';
-import NoteCard from '../../components/NoteCard';
-import { supabase } from '../../lib/supabaseClient';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import ManageNote from '../../components/ManageNote';
+import { supabase } from '../../lib/supabaseClient';
 dayjs.extend(relativeTime);
 
 function Note({ note }) {
   const user = supabase.auth.user();
+  const cardBg = useColorModeValue('gray.50', 'gray.900');
+   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const router = useRouter();
   const toast = useToast();
   const [isDeleting, setDeleting] = useState(false);
 
-  const { onOpen, isOpen, onClose } = useDisclosure()
-   const initialRef = useRef();
+  const { onOpen, isOpen, onClose } = useDisclosure();
+  const initialRef = useRef();
 
   useEffect(() => {
     if (!user) {
@@ -81,10 +84,10 @@ function Note({ note }) {
         maxW='md'
         mx='auto'
         border='1px'
-        bg='gray.50'
+        bg={cardBg}
         boxShadow='md'
         borderRadius='md'
-        borderColor='gray.300'
+        borderColor={borderColor}
         overflow='hidden'
         p='4'
         _hover={{ boxShadow: '2xl' }}>
