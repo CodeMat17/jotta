@@ -91,7 +91,7 @@ function Note({ note }) {
         overflow='hidden'
         p='4'
         _hover={{ boxShadow: '2xl' }}>
-        <Heading fontWeight='bold' fontSize='xl' mt='2' color='green'>
+        <Heading fontWeight='bold' fontSize='2xl' mt='2' color='green'>
           {note?.title}
         </Heading>
         <Tag
@@ -104,27 +104,27 @@ function Note({ note }) {
         />
         <Flex justify='space-between'>
           <VStack spacing='-1' align='start'>
-            <Text fontSize='xs' color='gray.400'>
+            <Text fontSize='sm' color='gray.400'>
               Created
             </Text>
-            <Text fontSize='xs' color='gray.400'>
+            <Text fontSize='sm' color='gray.400'>
               {dayjs(note.created_at).format('MMM D, YYYY')}
             </Text>
           </VStack>
 
           {note.updated_on && (
             <VStack spacing='-1' align='start'>
-              <Text fontSize='xs' color='gray.400'>
+              <Text fontSize='sm' color='gray.400'>
                 Updated
               </Text>
-              <Text fontSize='xs' color='gray.400'>
+              <Text fontSize='sm' color='gray.400'>
                 {dayjs(note.updated_on).fromNow()}
               </Text>
             </VStack>
           )}
         </Flex>
         <Divider my='4' />
-        <Text fontSize='sm' color='gray.700'>
+        <Text fontSize='lg' color='gray.700'>
           {note.desc}
         </Text>
         <Divider my='4' />

@@ -39,7 +39,7 @@ function NoteCard({ note }) {
       <Heading
         textTransform='uppercase'
         fontWeight='bold'
-        fontSize='xl'
+        fontSize='2xl'
         mt='2'
         color={note.is_completed ? grayText : 'green'}>
         {note?.title}
@@ -54,20 +54,20 @@ function NoteCard({ note }) {
       />
       <Flex justify='space-between'>
         <VStack spacing='-1' align='start'>
-          <Text fontSize='xs' color={grayText}>
+          <Text fontSize='sm' color={grayText}>
             Created
           </Text>
-          <Text fontSize='xs' color={grayText}>
+          <Text fontSize='sm' color={grayText}>
             {dayjs(note.created_at).format('MMM D, YYYY')}
           </Text>
         </VStack>
 
         {note.updated_on && (
           <VStack spacing='-1' align='start'>
-            <Text fontSize='xs' color={grayText}>
+            <Text fontSize='sm' color={grayText}>
               Updated
             </Text>
-            <Text fontSize='xs' color={grayText}>
+            <Text fontSize='sm' color={grayText}>
               {dayjs(note.updated_on).fromNow()}
             </Text>
           </VStack>
@@ -75,7 +75,7 @@ function NoteCard({ note }) {
       </Flex>
       <Divider my='4' />
       <Text
-        fontSize='sm'
+        fontSize='lg'
         color={note.is_completed ? isCompletedTextColor : textColor}
         noOfLines='2'>
         {note.desc}
@@ -83,7 +83,10 @@ function NoteCard({ note }) {
       <Divider my='4' />
       <HStack>
         <Spacer />
-        <Button onClick={() => router.push(`/note/${note.id}`)} colorScheme='green' size='sm' >
+        <Button
+          onClick={() => router.push(`/note/${note.id}`)}
+          colorScheme='green'
+          >
           {note.is_completed ? 'Edit/Remove' : 'See Details'}
         </Button>
       </HStack>
