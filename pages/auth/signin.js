@@ -107,19 +107,19 @@ function Signin() {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const { user } = await supabase.auth.api.getUserByCookie(req);
-  if (user) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/',
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}
+// export async function getServerSideProps({ req }) {
+//   const { user } = await supabase.auth.api.getUserByCookie(req);
+//   if (user) {
+//     return {
+//       props: {},
+//       redirect: {
+//         destination: '/',
+//       },
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }
 
 export default Signin;

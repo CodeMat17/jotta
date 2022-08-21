@@ -35,13 +35,13 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     if (router.pathname === '/auth/signin') {
-  //       router.push('/');
-  //     }
-  //   }
-  // }, [router, user]);
+  useEffect(() => {
+    if (user) {
+      if (router.pathname === '/auth/signin') {
+        router.push('/');
+      }
+    }
+  }, [router, user]);
 
   const handleAuthSession = async (event, session) => {
     await fetch('/api/auth', {

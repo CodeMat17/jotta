@@ -163,7 +163,7 @@ export default function Home() {
           </>
         )}
       </main>
-      <HStack position='fixed' bottom='32' right={[8, 8, 12]} maw='6xl'>
+      <HStack position='fixed' bottom='20' right={[8, 8, 12]} maw='6xl'>
         <Spacer />
         <IconButton
           border='2px'
