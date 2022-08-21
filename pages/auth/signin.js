@@ -1,19 +1,23 @@
+import { WarningIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
   Box,
-  Button,
   chakra,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
   Input,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { BiMailSend } from 'react-icons/bi';
+import SigninForm from '../../components/SigninForm';
 import { supabase } from '../../lib/supabaseClient';
 
 function Signin() {
@@ -25,6 +29,7 @@ function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
     const { error } = await supabase.auth.signIn({ email });
     if (error) {
@@ -38,92 +43,83 @@ function Signin() {
   };
 
   return (
-    <Box minH='100vh' px='4' py='28' bg='gray.50'>
-      {error && (
-        <Alert
-          status='error'
-          variant='subtle'
-          rounded='md'
-          flexDirection='column'
-          maxW='xs'
-          mx='auto'
-          mb='6'
-          py='6'
-          alignItems='center'
-          justifyContent='center'
-          textAlign='center'>
-          <AlertIcon boxSize='30px' />
-          <AlertTitle pt='1' pb='4'>
-            Error!
-          </AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
-        </Alert>
-      )}
-      {isSubmitted ? (
-        <Alert
-          status='success'
-          variant='subtle'
-          rounded='md'
-          flexDirection='column'
-          maxW='xs'
-          mx='auto'
-          mb='6'
-          py='6'
-          alignItems='center'
-          justifyContent='center'
-          textAlign='center'>
-          <AlertIcon boxSize='30px' />
-          <AlertTitle pt='1' pb='4'>
-            Done!
-          </AlertTitle>
-          <AlertDescription>
-            Check your email: {email} for your login link.
-          </AlertDescription>
-        </Alert>
-      ) : (
-        <Box
-          bg='white'
-          py='10'
-          px='4'
-          maxW={['xs', 'sm']}
-          mx='auto'
-          rounded='md'
-          shadow='2xl'>
-          <Heading fontWeight='semibold' fontSize='23' color='#64dd17'>
-            Sign in
+    <Box w='100%' h='100vh'>
+      <Flex maxW='xs' mx='auto' mt={[12, 20]} justify='center' flexDir='column'>
+        <Flex flexDir='row' justify='center'>
+          <Heading justifyContent='center' color='#40df6d'>
+            E
           </Heading>
-          <chakra.form mt='12'>
-            <VStack spacing='6'>
-              <FormControl isInvalid={isError} isRequired>
-                <FormLabel fontSize='xs'>Email</FormLabel>
-                <Input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder='Eg. abcd@gmail.com'
-                  w='100%'
-                />
-                {isError && (
-                  <FormErrorMessage fontSize='xs'>
-                    Email is required.
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-              <Button
-                type='submit'
-                onClick={handleSubmit}
-                isLoading={isLoading}
-                loadingText='Signing, please wait...'
-                w='100%'
-                colorScheme='green'
-                color='white'>
-                Sign in
-              </Button>
-            </VStack>
-          </chakra.form>
+          <Heading justifyContent='center'>Noter</Heading>
+        </Flex>
+        <Box bg='#45FC38' my='8' mx='auto' px='8' h='0.5' rounded='3xl'>
+          {/* <Divider border='2px' /> */}
         </Box>
-      )}
+        <Text textAlign='center'>
+          Save your notes, appointments and other schedules with ENoter.
+        </Text>
+
+        {error && (
+          <Flex
+            mt='8'
+            p='6'
+            bg='red.100'
+            color='red'
+            justify='center'
+            align='center'
+            flexDir='column'
+            rounded='md'>
+            <WarningIcon fontSize='3xl' />
+
+            <Text textAlign='center' mt='4'>
+              {error.message}
+            </Text>
+          </Flex>
+        )}
+
+        {isSubmitted ? (
+          <Flex
+            mt='12'
+            p='6'
+            bg='green.50'
+            color='green'
+            justify='center'
+            align='center'
+            flexDir='column'
+            rounded='md'>
+            <BiMailSend size='32' />
+            <Text textAlign='center' mt='2' fontWeight='semibold' fontSize='20'>
+              Check your email box
+            </Text>
+            <Text textAlign='center' mt='2'>
+              Your login link has been sent to {email}
+            </Text>
+          </Flex>
+        ) : (
+          <SigninForm
+              email={email}
+              setEmail={setEmail}
+            isLoading={isLoading}
+            handleSubmit={handleSubmit}
+          />
+        )}
+      </Flex>
     </Box>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+  if (user) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }
 
 export default Signin;

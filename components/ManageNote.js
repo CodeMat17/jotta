@@ -15,72 +15,93 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Switch,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-function ManageNote({ isOpen, onClose, initialRef, getNotes }) {
+function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
+  const [is_completed, setCompleted] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
-  //   const toast = useToast();
-  //   const toastIdRef = React.useRef();
+  const toast = useToast();
+  const router = useRouter();
 
-  //   const updatedToast = () => {
-  //     if (toastIdRef.current) {
-  //       toast.update(toastIdRef.current, {
-  //         status: 'success',
-  //         duration: '9000',
-  //         isClosable: 'true',
-  //         position: 'top',
-  //         description: 'Note is successfully added.',
-  //       });
-  //     }
-  //   };
-
-  //   const showToast = () => {
-  //     toastIdRef.current = toast({
-  //       status: 'info',
-  //       duration: '9000',
-  //       isClosable: 'true',
-  //       position: 'top',
-  //       description: 'Adding note',
-  //     });
-  //   };
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title);
+      setDesc(note.desc);
+      setCompleted(note.is_completed);
+    }
+  }, [note]);
 
   const addHandler = async (e) => {
     e.preventDefault();
     setIsError(false);
     setErrorMessage('');
 
-    if (desc <= 9) {
+    if (desc.length <= 9) {
       setIsError(true);
       return;
     }
-    // showToast();
     setLoading(true);
 
     const user = supabase.auth.user();
-    const { error } = await supabase
-      .from('notes')
-      .insert([{ title, desc, user_id: user.id }]);
-    getNotes();
+    let supabaseError;
+    if (note) {
+      const { error } = await supabase
+        .from('notes')
+        .update([
+          {
+            title,
+            desc,
+            is_completed,
+            user_id: user.id,
+            updated_on: new Date(),
+          },
+        ])
+        .eq('id', note.id);
+
+      supabaseError = error;
+    } else {
+      const { error } = await supabase
+        .from('notes')
+        .insert([{ title, desc, user_id: user.id }]);
+      supabaseError = error;
+      reload();
+    }
+
     setLoading(false);
-    // updatedToast();
-    if (error) {
-      setErrorMessage(error.message);
+
+    toast({
+      status: 'success',
+      duration: '5000',
+      isClosable: 'true',
+      position: 'top',
+      description: 'Note is successfully added.',
+    });
+    if (supabaseError) {
+      setErrorMessage(supabaseError.message);
     } else {
       closeHandler();
+      if (note) {
+        router.push('/');
+      }
     }
   };
 
   const closeHandler = () => {
     setTitle('');
     setDesc('');
+    setCompleted(false);
+    // setNote(null);
     onClose();
   };
 
@@ -93,9 +114,9 @@ function ManageNote({ isOpen, onClose, initialRef, getNotes }) {
       isCentered>
       <ModalOverlay />
       <ModalContent>
-        <form>
-          <ModalHeader color='green'>Add A Note</ModalHeader>
-          <ModalCloseButton />
+        <form onSubmit={addHandler}>
+          <ModalHeader color='green'>{note ? 'Update' : 'Add'} Note</ModalHeader>
+          <ModalCloseButton onClick={closeHandler} />
           <ModalBody>
             {errorMessage && (
               <Alert
@@ -113,18 +134,19 @@ function ManageNote({ isOpen, onClose, initialRef, getNotes }) {
               </Alert>
             )}
 
-            <FormControl isRequired>
+            <FormControl isRequired={true}>
               <FormLabel fontSize='xs' mb='1'>
                 Title
               </FormLabel>
               <Input
+                ref={initialRef}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder='Add your note title here'
               />
             </FormControl>
 
-            <FormControl isRequired mt='4'>
+            <FormControl isRequired={true} mt='4'>
               <FormLabel fontSize='xs' mb='1'>
                 Description
               </FormLabel>
@@ -134,33 +156,48 @@ function ManageNote({ isOpen, onClose, initialRef, getNotes }) {
                 placeholder='Add your description here'
               />
               {isError ? (
-                <FormHelperText color='red' fontSize='xs' mt='0'>
+                <FormHelperText color='red' fontSize='xs' mt='1.5'>
                   Description is less than 10 characters
                 </FormHelperText>
               ) : (
-                <FormHelperText fontSize='xs' mt='0'>
+                <FormHelperText fontSize='xs' mt='1.5'>
                   Description must have more than 10 characters
                 </FormHelperText>
               )}
             </FormControl>
+
+            {note && (
+              <FormControl mt='4'>
+                <FormLabel fontSize='xs' mb='1'>
+                  Is Completed?
+                </FormLabel>
+                <Switch
+                  isChecked={is_completed}
+                  id='is-completed'
+                  onChange={(e) => setCompleted(!is_completed)}
+                />
+              </FormControl>
+            )}
           </ModalBody>
           <ModalFooter>
             <ButtonGroup spacing='6'>
               <Button
                 onClick={closeHandler}
+                type='reset'
+                isDisabled={isLoading}
                 size='sm'
                 variant='outline'
                 colorScheme='red'>
                 Cancel
               </Button>
               <Button
-                onClick={addHandler}
+                type='submit'
                 isLoading={isLoading}
-                loadingText='Adding note...'
+                loadingText='Adding...'
                 size='sm'
                 variant='solid'
                 colorScheme='green'>
-                Add
+                {note ? 'Update' : 'Add'}
               </Button>
             </ButtonGroup>
           </ModalFooter>

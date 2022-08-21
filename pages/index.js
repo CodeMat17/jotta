@@ -1,36 +1,37 @@
 import { useDisclosure } from '@chakra-ui/hooks';
-import { Box, Heading, HStack, SimpleGrid, Tag, Text } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  SimpleGrid,
+  Spacer,
+  Spinner,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import ManageNote from '../components/ManageNote';
-import NavHeader from '../components/NavHeader';
 import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
 
 export default function Home() {
   const user = supabase.auth.user();
   const [notes, setNotes] = useState([]);
+  const [note, setNote] = useState(null);
+  const [isFetching, setFetching] = useState(true);
 
   const initialRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      // supabase
-      //   .from('notes')
-      //   .select('*')
-      //   .eq('user_id', user?.id)
-      //   .order('id', { ascending: false })
-      //   .then(({ data, error }) => {
-      //     if (!error) {
-      //       setNotes(data);
-      //     }
-      //   });
-      getNotes()
-    }
-  }, [user]);
 
   const getNotes = async () => {
     await supabase
@@ -45,22 +46,27 @@ export default function Home() {
       });
   };
 
-  // useEffect(() => {
-  //   const noteListener = supabase
-  //     .from('notes')
-  //     .on('*', (payload) => {
-  //       const newNote = payload.new;
-  //       setNotes((oldNotes) => {
-  //         const newNotes = [...oldNotes, newNote];
-  //         newNotes.sort((a, b) => b.id - a.id);
-  //         return newNotes;
-  //       });
-  //     })
-  //     .subscribe();
-  //   return () => {
-  //     noteListener.unsubscribe();
-  //   };
-  // }, []);
+  useEffect(() => {
+    if (user) {
+      supabase
+        .from('notes')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('id', { ascending: false })
+        .then(({ data, error }) => {
+          if (!error) {
+            setNotes(data);
+          }
+        });
+      setFetching(false);
+      // getNotes()
+    }
+  }, [user]);
+
+  const openHandler = (clickedNote) => {
+    setNote(clickedNote);
+    onOpen();
+  };
 
   return (
     <div>
@@ -74,8 +80,14 @@ export default function Home() {
       </Head>
 
       <main>
-        <NavHeader onOpen={onOpen} />
-        <ManageNote isOpen={isOpen} onClose={onClose} initialRef={initialRef} getNotes={getNotes} />
+        <ManageNote
+          isOpen={isOpen}
+          onClose={onClose}
+          initialRef={initialRef}
+          reload={getNotes}
+          note={note}
+          setNote={setNote}
+        />
         <Box>
           <Heading
             textAlign='center'
@@ -86,25 +98,83 @@ export default function Home() {
           </Heading>
           <HStack mb='8' mt='1' spacing='6' justify='center'>
             <HStack spacing='1'>
-              <Tag bg='green.400' borderRadius='3xl' size='sm' />
-              <Text fontSize='sm'>Used</Text>
-            </HStack>
-            <HStack spacing='1'>
               <Tag bg='yellow.400' borderRadius='3xl' size='sm' />
               <Text fontSize='sm'>In use</Text>
             </HStack>
+            <HStack spacing='1'>
+              <Tag bg='green.400' borderRadius='3xl' size='sm' />
+              <Text fontSize='sm'>Completed</Text>
+            </HStack>
           </HStack>
         </Box>
-        <SimpleGrid
-          columns={[1, 1, 2, 3]}
-          gap={[4]}
-          maxW='6xl'
-          mx='auto'
-          // mx='6'
-          px='4'>
-          {notes && notes.map((note) => <NoteCard key={note.id} note={note} />)}
-        </SimpleGrid>
+        {isFetching ? (
+          <Box maxW='xs' mx='auto' mt='16'>
+            <Alert
+              flexDirection='column'
+              rounded='md'
+              py='12'
+              alignItems='center'
+              textAlign='center'>
+              <AlertIcon />
+              <Flex mt='4'>
+                <AlertDescription letterSpacing='1px' mr='4'>
+                  Fetching...
+                </AlertDescription>
+                <Spinner />
+              </Flex>
+            </Alert>
+          </Box>
+        ) : (
+          <>
+            {notes.length <= 0 ? (
+              <Box maxW='xs' mx='auto' mt='16'>
+                <Alert
+                  flexDirection='column'
+                  rounded='md'
+                  py='12'
+                  alignItems='center'
+                  textAlign='center'>
+                  <AlertIcon />
+                  <Flex mt='4'>
+                    <AlertDescription letterSpacing='1px' mr='4'>
+                      You do not have any note.
+                    </AlertDescription>
+                  </Flex>
+                </Alert>
+              </Box>
+            ) : (
+              <SimpleGrid
+                columns={[1, 1, 2, 3]}
+                gap={[4]}
+                maxW='6xl'
+                mx='auto'
+                mb='12'
+                px='4'>
+                {notes &&
+                  notes.map((note) => (
+                    <NoteCard
+                      key={note.id}
+                      note={note}
+                      openHandler={openHandler}
+                    />
+                  ))}
+              </SimpleGrid>
+            )}
+          </>
+        )}
       </main>
+      <HStack position='fixed' bottom='32' right={[8, 8, 12]} maw='6xl'>
+        <Spacer />
+        <IconButton
+          border='2px'
+          onClick={onOpen}
+          icon={<PlusSquareIcon />}
+          colorScheme='green'
+          shadow='dark-lg'
+          size='lg'
+          isRound={true}
+        />
+      </HStack>
     </div>
   );
 }

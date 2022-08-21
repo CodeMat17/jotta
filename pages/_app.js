@@ -1,7 +1,9 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import NavHeader from '../components/NavHeader';
 import { supabase } from '../lib/supabaseClient';
+import  theme  from '../theme';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -33,13 +35,13 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  useEffect(() => {
-    if (user) {
-      if (router.pathname === '/auth/signin') {
-        router.push('/');
-      }
-    }
-  }, [router, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     if (router.pathname === '/auth/signin') {
+  //       router.push('/');
+  //     }
+  //   }
+  // }, [router, user]);
 
   const handleAuthSession = async (event, session) => {
     await fetch('/api/auth', {
@@ -51,7 +53,8 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <NavHeader />
       <Component {...pageProps} />
     </ChakraProvider>
   );

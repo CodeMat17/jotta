@@ -1,15 +1,27 @@
 import {
   Box,
+  Button,
   Divider,
   Flex,
   Heading,
+  HStack,
+  Spacer,
   Tag,
   Text,
+  useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useRouter } from 'next/router';
+dayjs.extend(relativeTime);
 
 function NoteCard({ note }) {
+  const router = useRouter();
+  const isCompletedTextColor = useColorModeValue('gray.400', 'gray.600')
+  const grayText = useColorModeValue('gray.400', 'gray.500');
+  const textColor = useColorModeValue('gray.800', 'gray.300');
+
   return (
     <Box
       pos='relative'
@@ -17,11 +29,18 @@ function NoteCard({ note }) {
       maxW='xs'
       mx='auto'
       border='1px'
+      bg=''
       borderRadius='md'
-      borderColor='gray.300'
+      borderColor={useColorModeValue('gray.300', 'gray.700')}
       overflow='hidden'
-      p='4'>
-      <Heading fontWeight='semibold' fontSize='lg' mt='2'>
+      p='4'
+      _hover={{ boxShadow: 'lg' }}>
+      <Heading
+        textTransform='uppercase'
+        fontWeight='bold'
+        fontSize='xl'
+        mt='2'
+        color={note.is_completed ? 'green.700' : 'green'}>
         {note?.title}
       </Heading>
       <Tag
@@ -34,27 +53,45 @@ function NoteCard({ note }) {
       />
       <Flex justify='space-between'>
         <VStack spacing='-1' align='start'>
-          <Text fontSize='xs' color='gray.400'>
+          <Text fontSize='xs' color={grayText}>
             Created
           </Text>
-          <Text fontSize='xs' color='gray.400'>
-            Date created
+          <Text fontSize='xs' color={grayText}>
+            {dayjs(note.created_at).format('MMM D, YYYY')}
           </Text>
         </VStack>
 
-        <VStack spacing='-1' align='start'>
-          <Text fontSize='xs' color='gray.400'>
-            Updated
-          </Text>
-          <Text fontSize='xs' color='gray.400'>
-            Date updated
-          </Text>
-        </VStack>
+        {note.updated_on && (
+          <VStack spacing='-1' align='start'>
+            <Text fontSize='xs' color={grayText}>
+              Updated
+            </Text>
+            <Text fontSize='xs' color={grayText}>
+              {dayjs(note.updated_on).fromNow()}
+            </Text>
+          </VStack>
+        )}
       </Flex>
       <Divider my='4' />
-      <Text fontSize='sm' color='gray.700' noOfLines={[3]}>
+      <Text
+        fontSize='sm'
+        color={note.is_completed ? isCompletedTextColor : textColor}
+        noOfLines='2'>
         {note.desc}
       </Text>
+      <Divider my='4' />
+      <HStack>
+        <Spacer />
+        <Button
+          onClick={() => router.push(`/note/${note.id}`)}
+          size='sm'
+          fontSize='sm'
+          color='white'
+          bg='green'
+          _hover={{ color: 'green', bg: 'green.100' }}>
+          {note.is_completed ? 'Edit/Remove' : 'See detail'}
+        </Button>
+      </HStack>
     </Box>
   );
 }

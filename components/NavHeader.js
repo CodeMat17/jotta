@@ -1,10 +1,20 @@
-import { Box, Button, ButtonGroup, Flex, Text } from '@chakra-ui/react';
-import Link from 'next/link';
+import {
+  Box,
+  Heading,
+  HStack,
+  IconButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { AiOutlinePoweroff } from 'react-icons/ai';
 import { supabase } from '../lib/supabaseClient';
+import DarkModeButton from './DarkModeButton';
 
-function NavHeader({onOpen}) {
+function NavHeader({ toggleColorMode, colorMode }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const drwRef = useRef();
+
   const router = useRouter();
   const [isLoggingOut, setLogOut] = useState(false);
 
@@ -19,47 +29,89 @@ function NavHeader({onOpen}) {
       router.push('/auth/signin');
     }
   };
+  const user = supabase.auth.user();
 
   return (
-    <Box bg='pink.100'>
-      <Flex
-        as='nav'
-        p='5'
+    <Box as='nav' bg='#40df6d' position='sticky' top='0' zIndex='50'>
+      <HStack
+        aria-label='Site navigation'
+        pl='4'
+        pr='2'
+        py={[3, 4]}
         maxW='6xl'
         mx='auto'
         justify='space-between'
-        align='center'
-        aria-label='Site navigation'>
-        <Text
-          fontSize='20'
+        align='center'>
+        <Heading
+          fontSize={['xl', '2xl', '3xl']}
           fontWeight='semibold'
-          bgGradient='linear(to-l, #7928CA, #FF0080)'
-          bgClip='text'>
+          color='green.600'>
           ENoter
-        </Text>
+        </Heading>
         <Box>
-          <Link href='/profile'>
-            <a>Profile</a>
-          </Link>
-          <ButtonGroup spacing='1' ml='4'>
-            <Button
-              onClick={onOpen}
-              size={['xs', 'sm', 'sm']}
-              variant='ghost'
-              colorScheme='green'>
-              Add Note
-            </Button>
-            <Button
-              onClick={logoutHandler}
-              size={['xs', 'sm', 'sm']}
-              variant='outline'
-              colorScheme='red'
-              isLoading={isLoggingOut}>
-              Logout
-            </Button>
-          </ButtonGroup>
+          <HStack spacing='4' mr='2'>
+            <Box>
+              <DarkModeButton />
+            </Box>
+
+            <>
+              {user && (
+                <Box>
+                  <IconButton
+                    onClick={logoutHandler}
+                    icon={<AiOutlinePoweroff />}
+                    color='red.500'
+                    bg='red.100'
+                    isRound
+                    isLoading={isLoggingOut}
+                  />
+                </Box>
+              )}
+            </>
+
+            {/* <Box display={['block', 'none']}>
+              <IconButton
+                ref={drwRef}
+                onClick={onOpen}
+                icon={<HiMenuAlt3 size='25' />}
+                variant='ghost'
+                color='green.600'
+              />
+
+              <Drawer
+                isOpen={isOpen}
+                onClose={onClose}
+                placement='right'
+                finalFocusRef={drwRef}>
+                <DrawerOverlay />
+                <DrawerContent>
+                  <DrawerCloseButton size='lg' color='red' />
+                  <DrawerBody bg='green.300'>
+                    <VStack mt='24' spacing='8'>
+                      <Button
+                        onClick={() => router.push('/profile')}
+                        w='100%'
+                        variant='ghost'>
+                        Profile
+                      </Button>
+                      <Button
+                        onClick={logoutHandler}
+                        isLoading={isLoggingOut}
+                        loadingText='logging out...'
+                        w='100%'
+                        color='red.500'
+                        bg='red.200'
+                        _hover={{ bg: 'red.100' }}>
+                        Logout
+                      </Button>
+                    </VStack>
+                  </DrawerBody>
+                </DrawerContent>
+              </Drawer>
+            </Box> */}
+          </HStack>
         </Box>
-      </Flex>
+      </HStack>
     </Box>
   );
 }
