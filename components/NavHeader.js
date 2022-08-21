@@ -43,7 +43,7 @@ function NavHeader({ toggleColorMode, colorMode }) {
         justify='space-between'
         align='center'>
         <Heading
-          fontSize={['xl', '2xl', '3xl']}
+          fontSize={['2xl', '3xl']}
           fontWeight='semibold'
           color='green.600'>
           ENoter

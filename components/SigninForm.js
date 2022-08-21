@@ -10,10 +10,10 @@ import React from 'react';
 
 function SigninForm({ handleSubmit, email, setEmail, isLoading }) {
   return (
-    <chakra.form onSubmit={handleSubmit} mt='12' px='8'>
+    <chakra.form onSubmit={handleSubmit} mt='12' px='4'>
       <Text
         textAlign='center'
-        fontSize='23'
+        fontSize='32'
         fontWeight='semibold'
         color='#40df6d'>
         Sign In
@@ -25,6 +25,7 @@ function SigninForm({ handleSubmit, email, setEmail, isLoading }) {
         </FormLabel>
         <Input
           rounded='3xl'
+          size='lg'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Eg. abcd@gmail.com'
@@ -39,6 +40,7 @@ function SigninForm({ handleSubmit, email, setEmail, isLoading }) {
         w='100%'
         bg='#40df6d'
         color='white'
+        size='lg'
         _hover={{ bg: 'green' }}>
         Get a login link
       </Button>

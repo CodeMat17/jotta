@@ -46,15 +46,15 @@ function Signin() {
     <Box w='100%' h='100vh'>
       <Flex maxW='xs' mx='auto' mt={[12, 20]} justify='center' flexDir='column'>
         <Flex flexDir='row' justify='center'>
-          <Heading justifyContent='center' color='#40df6d'>
+          <Heading justifyContent='center' fontSize='36' color='#40df6d'>
             E
           </Heading>
-          <Heading justifyContent='center'>Noter</Heading>
+          <Heading justifyContent='center' fontSize='36'>Noter</Heading>
         </Flex>
         <Box bg='#45FC38' my='8' mx='auto' px='8' h='0.5' rounded='3xl'>
           {/* <Divider border='2px' /> */}
         </Box>
-        <Text textAlign='center'>
+        <Text textAlign='center' fontSize='xl'>
           Save your notes, appointments and other schedules with ENoter.
         </Text>
 
