@@ -44,7 +44,7 @@ function Signin() {
 
   return (
     <Box w='100%' h='100vh'>
-      <Flex maxW='xs' mx='auto' mt={[12, 20]} justify='center' flexDir='column'>
+      <Flex maxW='xs' mx='auto' mt='20' justify='center' flexDir='column'>
         <Flex flexDir='row' justify='center'>
           <Heading justifyContent='center' fontSize='36' color='#40df6d'>
             E

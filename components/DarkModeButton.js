@@ -11,8 +11,8 @@ function DarkModeButton() {
       icon={<SwitchIcon />}
       isRound
       // size='sm'
-      color={colorMode === 'dark' ? 'orange.500' : 'gray.400'}
-      bg={colorMode === 'dark' ? 'orange.200' : 'blue.900'}
+      color={colorMode === 'dark' ? 'orange.500' : 'gray.700'}
+      bg={colorMode === 'dark' ? 'orange.200' : 'gray.500'}
     />
   );
 }
