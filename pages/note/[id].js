@@ -25,7 +25,7 @@ dayjs.extend(relativeTime);
 function Note({ note }) {
   const user = supabase.auth.user();
   const cardBg = useColorModeValue('gray.50', 'gray.900');
-   const borderColor = useColorModeValue('gray.300', 'gray.700');
+  const borderColor = useColorModeValue('gray.300', 'gray.700');
   const router = useRouter();
   const toast = useToast();
   const [isDeleting, setDeleting] = useState(false);
@@ -92,7 +92,7 @@ function Note({ note }) {
         p='4'
         _hover={{ boxShadow: '2xl' }}>
         <Heading fontWeight='bold' fontSize='2xl' mt='2' color='green'>
-          {note?.title}
+          {note?.title} 
         </Heading>
         <Tag
           pos='absolute'
@@ -169,17 +169,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const { data: note } = await supabase
-    .from('notes')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const { data: note, error } = await supabase
+      .from('notes')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  return {
-    props: {
-      note,
-    },
-  };
+    if (error || !note) {
+      return { notFound: true };
+    }
+    return {
+      props: { note },
+    };
+  } catch (error) {
+    return { notFound: true };
+  }
 }
 
 export default Note;
