@@ -67,12 +67,11 @@ function NavHeader({ toggleColorMode, colorMode }) {
               <Box>
                 <IconButton
                   onClick={logoutHandler}
-                  icon={<AiOutlinePoweroff />}
-                  color='red.500'
-                  bg='red.100'
                   isRound
-                  isLoading={isLoggingOut}
-                />
+                  bg='red.100'
+                  isLoading={isLoggingOut}>
+                  <AiOutlinePoweroff size='24' color='red' />
+                </IconButton>
               </Box>
             )}
 

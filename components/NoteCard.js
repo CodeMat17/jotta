@@ -9,7 +9,7 @@ import {
   Tag,
   Text,
   useColorModeValue,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -27,10 +27,9 @@ function NoteCard({ note }) {
     <Box
       pos='relative'
       w='xs'
-      maxW='xs'
+      maxW='xs' 
       mx='auto'
       border='1px'
-      bg=''
       borderRadius='md'
       borderColor={useColorModeValue('gray.300', 'gray.700')}
       overflow='hidden'
@@ -85,8 +84,7 @@ function NoteCard({ note }) {
         <Spacer />
         <Button
           onClick={() => router.push(`/note/${note.id}`)}
-          colorScheme='green'
-          >
+          colorScheme='green'>
           {note.is_completed ? 'Edit/Remove' : 'See Details'}
         </Button>
       </HStack>

@@ -1,24 +1,23 @@
 import { useDisclosure } from '@chakra-ui/hooks';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
-  Flex,
+  Circle,
+  Container,
   Heading,
   HStack,
   IconButton,
   SimpleGrid,
   Spacer,
   Spinner,
+  Square,
   Tag,
   Text,
 } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { MdHourglassEmpty, MdOutlineAddCircle } from 'react-icons/md';
 import ManageNote from '../components/ManageNote';
 import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
@@ -108,40 +107,28 @@ export default function Home() {
           </HStack>
         </Box>
         {isFetching ? (
-          <Box maxW='xs' mx='auto' mt='16'>
-            <Alert
-              flexDirection='column'
-              rounded='md'
-              py='12'
-              alignItems='center'
-              textAlign='center'>
-              <AlertIcon />
-              <Flex mt='4'>
-                <AlertDescription letterSpacing='1px' mr='4'>
-                  Fetching...
-                </AlertDescription>
-                <Spinner />
-              </Flex>
-            </Alert>
-          </Box>
+          <Container maxW='xs' mt='20' py='4' centerContent>
+            <Circle size='40px' bg='green.200'>
+              <Spinner color='green' />
+            </Circle>
+            <Square letterSpacing='2px' mt='2'>
+              Fetching
+            </Square>
+          </Container>
         ) : (
           <>
             {notes.length <= 0 ? (
-              <Box maxW='xs' mx='auto' mt='16'>
-                <Alert
-                  flexDirection='column'
-                  rounded='md'
-                  py='12'
-                  alignItems='center'
+              <Container centerContent mt='20' maxW='xs'>
+                <MdHourglassEmpty color='gray' size='28' />
+                <Square
+                  letterSpacing='2px'
+                  mt='2'
+                  color='gray'
+                  fontSize='20'
                   textAlign='center'>
-                  <AlertIcon />
-                  <Flex mt='4'>
-                    <AlertDescription letterSpacing='1px' mr='4'>
-                      You do not have any note.
-                    </AlertDescription>
-                  </Flex>
-                </Alert>
-              </Box>
+                  You do not have any note at the moment.
+                </Square>
+              </Container>
             ) : (
               <SimpleGrid
                 columns={[1, 1, 2, 3]}
@@ -166,14 +153,14 @@ export default function Home() {
       <HStack position='fixed' bottom='20' right={[8, 8, 12]} maw='6xl'>
         <Spacer />
         <IconButton
-          border='2px'
           onClick={onOpen}
-          icon={<PlusSquareIcon />}
-          colorScheme='green'
           shadow='dark-lg'
-          size='lg'
-          isRound={true}
-        />
+          isRound
+          h='16'
+          bg='green.400'
+          w='16'>
+          <MdOutlineAddCircle size='50' color='green' />
+        </IconButton>
       </HStack>
     </div>
   );
@@ -185,6 +172,7 @@ export async function getServerSideProps({ req }) {
     return {
       props: {},
       redirect: {
+        permanent: false,
         destination: '/auth/signin',
       },
     };

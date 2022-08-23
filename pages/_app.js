@@ -1,21 +1,30 @@
-import { ChakraProvider, useColorMode } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import NavHeader from '../components/NavHeader';
 import { supabase } from '../lib/supabaseClient';
-import  theme  from '../theme';
+import theme from '../theme';
 
 function MyApp({ Component, pageProps }) {
+  const [session, setSession] = useState(null);
+
+  // useEffect(() => {
+  //   setSession(supabase.auth.session());
+  //   supabase.auth.onAuthStateChange((_event, session) => {
+  //     setSession(session);
+  //   });
+  // }, []);
+
   const router = useRouter();
   const user = supabase.auth.user();
 
-   useEffect(() => {
-     if (user) {
-       if (router.pathname === '/auth/signin') {
-         router.push('/');
-       }
-     }
-   }, [router, user]);
+  useEffect(() => {
+    if (user) {
+      if (router.pathname === '/auth/signin') {
+        router.push('/');
+      }
+    }
+  }, [router, user]);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -43,8 +52,6 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
- 
-
   const handleAuthSession = async (event, session) => {
     await fetch('/api/auth', {
       method: 'POST',
@@ -56,7 +63,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}>
-      <NavHeader />
+      <NavHeader session={session} />
       <Component {...pageProps} />
     </ChakraProvider>
   );

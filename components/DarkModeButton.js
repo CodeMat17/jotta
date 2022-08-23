@@ -1,19 +1,20 @@
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { MoonIcon } from '@chakra-ui/icons';
 import { IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { RiSunFill } from 'react-icons/ri';
+import {BsFillMoonFill} from 'react-icons/bs'
 
 function DarkModeButton() {
-   const { toggleColorMode, colorMode } = useColorMode();
-  const SwitchIcon = useColorModeValue(MoonIcon, SunIcon);
+  const { toggleColorMode, colorMode } = useColorMode();
+  const SwitchIcon = useColorModeValue(MoonIcon, RiSunFill);
 
   return (
-    <IconButton
-      onClick={toggleColorMode}
-      icon={<SwitchIcon />}
-      isRound
-      // size='sm'
-      color={colorMode === 'dark' ? 'orange.500' : 'gray.700'}
-      bg={colorMode === 'dark' ? 'orange.200' : 'gray.500'}
-    />
+    <IconButton onClick={toggleColorMode} bg='gray.200' isRound variant='ghost'>
+      {colorMode === 'dark' ? (
+        <RiSunFill size='24' color='orange' />
+      ) : (
+        <BsFillMoonFill size='24' color='gray' />
+      )}
+    </IconButton>
   );
 }
 
