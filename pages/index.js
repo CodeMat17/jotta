@@ -1,5 +1,4 @@
 import { useDisclosure } from '@chakra-ui/hooks';
-import { PlusSquareIcon } from '@chakra-ui/icons';
 import {
   Box,
   Circle,
@@ -32,6 +31,12 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!user) {
+      router.push('/auth/signin');
+    }
+  }, [user, router]);
+
   const getNotes = async () => {
     await supabase
       .from('notes')
@@ -43,24 +48,27 @@ export default function Home() {
           setNotes(data);
         }
       });
+    setFetching(false);
   };
 
   useEffect(() => {
-    if (user) {
-      supabase
-        .from('notes')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('id', { ascending: false })
-        .then(({ data, error }) => {
-          if (!error) {
-            setNotes(data);
-          }
-        });
-      setFetching(false);
-      // getNotes()
-    }
-  }, [user]);
+    // if (user) {
+    //   supabase
+    //     .from('notes')
+    //     .select('*')
+    //     .eq('user_id', user?.id)
+    //     .order('id', { ascending: false })
+    //     .then(({ data, error }) => {
+    //       if (!error) {
+    //         setNotes(data);
+    //       }
+    //     });
+    //   setFetching(false);
+    //   // getNotes()
+    // }
+
+    getNotes();
+  }, []);
 
   const openHandler = (clickedNote) => {
     setNote(clickedNote);
@@ -166,18 +174,18 @@ export default function Home() {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const { user } = await supabase.auth.api.getUserByCookie(req);
-  if (!user) {
-    return {
-      props: {},
-      redirect: {
-        permanent: false,
-        destination: '/auth/signin',
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}
+// export async function getServerSideProps({ req }) {
+//   const { user } = await supabase.auth.api.getUserByCookie(req);
+//   if (!user) {
+//     return {
+//       props: {},
+//       redirect: {
+//         permanent: false,
+//         destination: '/auth/signin',
+//       },
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }

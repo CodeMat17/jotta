@@ -9,7 +9,7 @@ import {
   Tag,
   Text,
   useColorModeValue,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -27,7 +27,7 @@ function NoteCard({ note }) {
     <Box
       pos='relative'
       w='xs'
-      maxW='xs' 
+      maxW='xs'
       mx='auto'
       border='1px'
       borderRadius='md'
@@ -39,7 +39,7 @@ function NoteCard({ note }) {
         textTransform='uppercase'
         fontWeight='bold'
         fontSize='2xl'
-        mt='2'
+        mt='3'
         color={note.is_completed ? grayText : 'green'}>
         {note?.title}
       </Heading>

@@ -1,12 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import NavHeader from '../components/NavHeader';
 import { supabase } from '../lib/supabaseClient';
-import theme from '../theme';
+import customTheme from '../theme';
 
 function MyApp({ Component, pageProps }) {
-  const [session, setSession] = useState(null);
+  // const [session, setSession] = useState(null);
 
   // useEffect(() => {
   //   setSession(supabase.auth.session());
@@ -62,8 +62,8 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <ChakraProvider theme={theme}>
-      <NavHeader session={session} />
+    <ChakraProvider theme={customTheme}>
+      <NavHeader />
       <Component {...pageProps} />
     </ChakraProvider>
   );
