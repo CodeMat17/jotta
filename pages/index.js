@@ -160,7 +160,12 @@ export default function Home({ notes }) {
 }
 
 export async function getStaticProps() {
-  const { data: notes } = await supabase.from('notes').select('*');
+  const user = supabase.auth.user();
+  const { data: notes } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('user_id', user?.id)
+    .order('id', { ascending: false });
 
   return {
     props: {
