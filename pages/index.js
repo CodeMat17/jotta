@@ -22,6 +22,8 @@ import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
 
 export default function Home({ notes }) {
+console.log('notes -', notes);
+
   const user = supabase.auth.user();
   // const [notes, setNotes] = useState([]);
   const [note, setNote] = useState(null);
@@ -110,7 +112,7 @@ export default function Home({ notes }) {
           </Container>
         ) : (
           <>
-            {notes.length <= 0 ? (
+            {!notes ? (
               <Container centerContent mt='20' maxW='xs'>
                 <MdHourglassEmpty color='gray' size='28' />
                 <Square
