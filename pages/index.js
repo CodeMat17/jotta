@@ -112,7 +112,7 @@ console.log('notes -', notes);
           </Container>
         ) : (
           <>
-            {!notes ? (
+            {/* {!notes ? (
               <Container centerContent mt='20' maxW='xs'>
                 <MdHourglassEmpty color='gray' size='28' />
                 <Square
@@ -124,7 +124,7 @@ console.log('notes -', notes);
                   You do not have any note at the moment.
                 </Square>
               </Container>
-            ) : (
+            ) : ( */}
               <SimpleGrid
                 columns={[1, 1, 2, 3]}
                 gap={[4]}
@@ -141,7 +141,7 @@ console.log('notes -', notes);
                     />
                   ))}
               </SimpleGrid>
-            )}
+            {/* )} */}
           </>
         )}
       </main>
@@ -166,13 +166,13 @@ export async function getStaticProps() {
   const { data: notes } = await supabase
     .from('notes')
     .select('*')
-    .eq('user_id', user?.id)
+    // .eq('user_id', user?.id)
     .order('id', { ascending: false });
 
   return {
     props: {
       notes,
     },
-    revalidate: 86400,
+    // revalidate: 86400,
   };
 }
