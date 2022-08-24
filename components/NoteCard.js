@@ -86,12 +86,7 @@ function NoteCard({ note }) {
       <HStack>
         <Spacer />
         <Button
-          onClick={() =>
-            router.push({
-              pathname: `/note/[id]`,
-              query: { id: note.id },
-            })
-          }
+          onClick={() => router.push(`/note/${note.id}`)}
           colorScheme='green'>
           {note.is_completed ? 'Edit/Remove' : 'See Details'}
         </Button>

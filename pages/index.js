@@ -21,11 +21,11 @@ import ManageNote from '../components/ManageNote';
 import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
 
-export default function Home() {
+export default function Home({ notes }) {
   const user = supabase.auth.user();
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
   const [note, setNote] = useState(null);
-  const [isFetching, setFetching] = useState(true);
+  const [isFetching, setFetching] = useState(false);
 
   const initialRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,38 +37,23 @@ export default function Home() {
     }
   }, [user, router]);
 
-  const getNotes = async () => {
-    await supabase
-      .from('notes')
-      .select('*')
-      .eq('user_id', user?.id)
-      .order('id', { ascending: false })
-      .then(({ data, error }) => {
-        if (!error) {
-          setNotes(data);
-        }
-      });
-    setFetching(false);
-  };
+  // const getNotes = async () => {
+  //   await supabase
+  //     .from('notes')
+  //     .select('*')
+  //     .eq('user_id', user?.id)
+  //     .order('id', { ascending: false })
+  //     .then(({ data, error }) => {
+  //       if (!error) {
+  //         setNotes(data);
+  //       }
+  //     });
+  //   setFetching(false);
+  // };
 
-  useEffect(() => {
-    // if (user) {
-    //   supabase
-    //     .from('notes')
-    //     .select('*')
-    //     .eq('user_id', user?.id)
-    //     .order('id', { ascending: false })
-    //     .then(({ data, error }) => {
-    //       if (!error) {
-    //         setNotes(data);
-    //       }
-    //     });
-    //   setFetching(false);
-    //   // getNotes()
-    // }
-
-    getNotes();
-  }, []);
+  // useEffect(() => {
+  //   getNotes();
+  // }, []);
 
   const openHandler = (clickedNote) => {
     setNote(clickedNote);
@@ -91,7 +76,7 @@ export default function Home() {
           isOpen={isOpen}
           onClose={onClose}
           initialRef={initialRef}
-          reload={getNotes}
+          // reload={getNotes}
           note={note}
           setNote={setNote}
         />
@@ -174,18 +159,13 @@ export default function Home() {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const { user } = await supabase.auth.api.getUserByCookie(req);
-//   if (!user) {
-//     return {
-//       props: {},
-//       redirect: {
-//         permanent: false,
-//         destination: '/auth/signin',
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+export async function getStaticProps() {
+  const { data: notes } = await supabase.from('notes').select('*');
+
+  return {
+    props: {
+      notes,
+    },
+    revalidate: 86400,
+  };
+}

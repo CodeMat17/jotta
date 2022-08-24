@@ -92,7 +92,7 @@ function Note({ note }) {
         p='4'
         _hover={{ boxShadow: '2xl' }}>
         <Heading fontWeight='bold' fontSize='2xl' mt='2' color='green'>
-          {note?.title} 
+          {note?.title}
         </Heading>
         <Tag
           pos='absolute'
@@ -164,7 +164,7 @@ export async function getStaticPaths() {
   }));
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   };
 }
 
@@ -181,6 +181,7 @@ export async function getStaticProps({ params: { id } }) {
     }
     return {
       props: { note },
+      revalidate: 86400,
     };
   } catch (error) {
     return { notFound: true };
