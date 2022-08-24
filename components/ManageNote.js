@@ -86,7 +86,10 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
       position: 'top',
       description: 'Note is successfully added.',
     });
-    reload();
+    if (!note) {
+      reload();
+    }
+
     if (supabaseError) {
       setErrorMessage(supabaseError.message);
     } else {

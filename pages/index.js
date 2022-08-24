@@ -91,12 +91,12 @@ export default function Home() {
           </Heading>
           <HStack mb='8' mt='1' spacing='6' justify='center'>
             <HStack spacing='1'>
-              <Tag bg='yellow.400' borderRadius='3xl' size='sm' />
-              <Text fontSize='sm'>In use</Text>
-            </HStack>
-            <HStack spacing='1'>
               <Tag bg='green.400' borderRadius='3xl' size='sm' />
               <Text fontSize='sm'>Completed</Text>
+            </HStack>
+            <HStack spacing='1'>
+              <Tag bg='yellow.400' borderRadius='3xl' size='sm' />
+              <Text fontSize='sm'>In use</Text>
             </HStack>
           </HStack>
         </Box>
@@ -127,7 +127,7 @@ export default function Home() {
               <SimpleGrid
                 columns={[1, 1, 2, 3]}
                 gap={[4]}
-                maxW='6xl'
+                maxW={['3xl', '3xl', '3xl', '6xl']}
                 mx='auto'
                 mb='12'
                 px='4'>

@@ -3,22 +3,34 @@ import {
   Heading,
   HStack,
   IconButton,
-  useDisclosure,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
+import { CgProfile } from 'react-icons/cg';
 import { supabase } from '../lib/supabaseClient';
 import DarkModeButton from './DarkModeButton';
 
 function NavHeader({ toggleColorMode, colorMode }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const drwRef = useRef();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  // const drwRef = useRef();
 
   const user = supabase.auth.user();
   const router = useRouter();
   const [isLoggingOut, setLogOut] = useState(false);
   const [showLogoutBtn, setShowLogoutBtn] = useState(false);
+  const [totalNotes, setTotalNotes] = useState([]);
+  const [isCompleted, setIsCompleted] = useState([]);
+  const [notCompleted, setNotCompleted] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -27,6 +39,42 @@ function NavHeader({ toggleColorMode, colorMode }) {
       setShowLogoutBtn(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    const getTotalNotes = async () => {
+      const { data, error } = await supabase.from('notes').select('*');
+      if (!error) {
+        setTotalNotes(data);
+      }
+    };
+    getTotalNotes();
+  }, []);
+
+  useEffect(() => {
+    const getIsCompletedNotes = async () => {
+      const { data, error } = await supabase
+        .from('notes')
+        .select('is_completed')
+        .is('is_completed', true);
+      if (!error) {
+        setIsCompleted(data);
+      }
+    };
+    getIsCompletedNotes();
+  }, []);
+
+  useEffect(() => {
+    const getNotCompletedNotes = async () => {
+      const { data, error } = await supabase
+        .from('notes')
+        .select('is_completed')
+        .is('is_completed', false);
+      if (!error) {
+        setNotCompleted(data);
+      }
+    };
+    getNotCompletedNotes();
+  }, []);
 
   const logoutHandler = async () => {
     try {
@@ -54,8 +102,10 @@ function NavHeader({ toggleColorMode, colorMode }) {
         <Heading
           fontSize={['2xl', '3xl']}
           fontWeight='semibold'
-          color='green.600'>
-          ENoter
+          // color='green.600'
+          bgGradient='linear(to-l, orange, #FF0080)'
+          bgClip='text'>
+          JOTTA
         </Heading>
         <Box>
           <HStack spacing='4' mr='2'>
@@ -64,7 +114,32 @@ function NavHeader({ toggleColorMode, colorMode }) {
             </Box>
 
             {showLogoutBtn && (
-              <Box>
+              <HStack spacing='4'>
+                <Popover>
+                  <PopoverTrigger>
+                    <IconButton isRound>
+                      <CgProfile size='42' color='green' />
+                    </IconButton>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverHeader>
+                      <CgProfile size='50' />
+                      <Text pt='2'> {user.email}</Text>
+                    </PopoverHeader>
+                    <PopoverBody>
+                      <VStack align='start'>
+                        <Text>Total no. of notes: {totalNotes.length}</Text>
+                        <Text>No. of in-use notes: {notCompleted.length}</Text>
+                        <Text>
+                          No. of completed notes: {isCompleted.length}
+                        </Text>
+                      </VStack>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+
                 <IconButton
                   onClick={logoutHandler}
                   isRound
@@ -72,7 +147,7 @@ function NavHeader({ toggleColorMode, colorMode }) {
                   isLoading={isLoggingOut}>
                   <AiOutlinePoweroff size='24' color='red' />
                 </IconButton>
-              </Box>
+              </HStack>
             )}
 
             {/* <Box display={['block', 'none']}>

@@ -3,7 +3,6 @@ import {
   Button,
   Divider,
   Flex,
-  Heading,
   HStack,
   Spacer,
   Tag,
@@ -36,16 +35,19 @@ function NoteCard({ note }) {
       borderRadius='md'
       borderColor={useColorModeValue('gray.300', 'gray.700')}
       overflow='hidden'
-      p='4'
+      px='4'
+      pb='4'
+      pt='10'
       _hover={{ boxShadow: 'lg' }}>
-      <Heading
+      <Text
         textTransform='uppercase'
-        fontWeight='bold'
+        as='b'
+        lineHeight='50%'
         fontSize='2xl'
-        mt='3'
         color={note.is_completed ? grayText : 'green'}>
         {note?.title}
-      </Heading>
+      </Text>
+
       <Tag
         pos='absolute'
         top='3'

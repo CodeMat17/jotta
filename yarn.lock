@@ -800,6 +800,16 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fontsource/baloo-2@^4.5.9":
+  version "4.5.9"
+  resolved "https://registry.yarnpkg.com/@fontsource/baloo-2/-/baloo-2-4.5.9.tgz#5f694b57167e795f1ba852bd2877ddd066cb1700"
+  integrity sha512-+s+wo3Jhk+eBmuBSheCrdDHV+LDGeaePAf/yISbRSVPYbF0pZ2VTfHaiDdMjYf9M7281nCm9UuIOLLT4IjrqjA==
+
+"@fontsource/caesar-dressing@^4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@fontsource/caesar-dressing/-/caesar-dressing-4.5.7.tgz#b46d452abb17b182bb9ffe98bc3cb774e5e9bd9b"
+  integrity sha512-f7kC1MWvFYSDxKx18cXmfeg56kJaUTsLcIDMUNYNzSrC6hV0xzWcxci4NlfDLB16RtJKa1p4r8EneubZOXi34g==
+
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.10.4.tgz#01e7366e57d2ad104feea63e72248f22015c520c"

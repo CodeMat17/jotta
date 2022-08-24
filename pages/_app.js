@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import NavHeader from '../components/NavHeader';
 import { supabase } from '../lib/supabaseClient';
+import '@fontsource/baloo-2';
+import '@fontsource/caesar-dressing';
 import customTheme from '../theme';
+import Footer from '../components/Footer';
 
 function MyApp({ Component, pageProps }) {
   // const [session, setSession] = useState(null);
@@ -65,6 +68,7 @@ function MyApp({ Component, pageProps }) {
     <ChakraProvider theme={customTheme}>
       <NavHeader />
       <Component {...pageProps} />
+      <Footer />
     </ChakraProvider>
   );
 }

@@ -10,6 +10,12 @@ const config = {
 };
 
 // 3. extend the theme
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  fonts: {
+    heading: `'Caesar Dressing', sans-serif`,
+    body: `'Baloo 2', sans-serif`,
+  },
+});
 
 export default theme;

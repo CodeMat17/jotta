@@ -1,6 +1,7 @@
 import { ArrowBackIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Container,
   Divider,
   Flex,
   Heading,
@@ -71,13 +72,17 @@ function Note({ note }) {
   };
 
   return (
-    <Box w='100%' h='100vh' justify='center' pt='32'>
+    <Box w='100%' h='100vh' justify='center' pt='24'>
       <ManageNote
         isOpen={isOpen}
         onClose={onClose}
         initialRef={initialRef}
         note={note}
       />
+      <Container centerContent py='8'>
+        <Heading>Details</Heading>
+      </Container>
+      
       <Box
         pos='relative'
         w={['xs', 'md']}
@@ -89,11 +94,19 @@ function Note({ note }) {
         borderRadius='md'
         borderColor={borderColor}
         overflow='hidden'
-        p='4'
+        px='4' pb='4' pt='12'
         _hover={{ boxShadow: '2xl' }}>
-        <Heading fontWeight='bold' fontSize='2xl' mt='2' color='green'>
+       
+
+        <Text
+          textTransform='uppercase'
+          as='b'
+          lineHeight='50%'
+          fontSize='2xl'
+          color={note.is_completed ? grayText : 'green'}>
           {note?.title}
-        </Heading>
+        </Text>
+
         <Tag
           pos='absolute'
           top='3'
@@ -124,7 +137,7 @@ function Note({ note }) {
           )}
         </Flex>
         <Divider my='4' />
-        <Text fontSize='lg' color='gray.700'>
+        <Text fontSize='lg'>
           {note.desc}
         </Text>
         <Divider my='4' />
