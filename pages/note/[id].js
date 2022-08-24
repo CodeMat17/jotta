@@ -26,6 +26,8 @@ dayjs.extend(relativeTime);
 function Note({ note }) {
   const user = supabase.auth.user();
   const cardBg = useColorModeValue('gray.50', 'gray.900');
+  const grayText = useColorModeValue('gray.400', 'gray.500');
+
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const router = useRouter();
   const toast = useToast();
@@ -82,7 +84,7 @@ function Note({ note }) {
       <Container centerContent py='8'>
         <Heading>Details</Heading>
       </Container>
-      
+
       <Box
         pos='relative'
         w={['xs', 'md']}
@@ -94,10 +96,10 @@ function Note({ note }) {
         borderRadius='md'
         borderColor={borderColor}
         overflow='hidden'
-        px='4' pb='4' pt='12'
+        px='4'
+        pb='4'
+        pt='12'
         _hover={{ boxShadow: '2xl' }}>
-       
-
         <Text
           textTransform='uppercase'
           as='b'
@@ -137,9 +139,7 @@ function Note({ note }) {
           )}
         </Flex>
         <Divider my='4' />
-        <Text fontSize='lg'>
-          {note.desc}
-        </Text>
+        <Text fontSize='lg'>{note.desc}</Text>
         <Divider my='4' />
         <HStack spacing='4'>
           <IconButton
