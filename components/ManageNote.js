@@ -75,7 +75,6 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
         .from('notes')
         .insert([{ title, desc, user_id: user.id }]);
       supabaseError = error;
-      reload();
     }
 
     setLoading(false);
@@ -87,6 +86,7 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
       position: 'top',
       description: 'Note is successfully added.',
     });
+    reload();
     if (supabaseError) {
       setErrorMessage(supabaseError.message);
     } else {
@@ -115,7 +115,9 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={addHandler}>
-          <ModalHeader color='green'>{note ? 'Update' : 'Add'} Note</ModalHeader>
+          <ModalHeader color='green' fontSize='26'>
+            {note ? 'Update' : 'Add'} Note
+          </ModalHeader>
           <ModalCloseButton onClick={closeHandler} />
           <ModalBody>
             {errorMessage && (
@@ -185,7 +187,7 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
                 onClick={closeHandler}
                 type='reset'
                 isDisabled={isLoading}
-                size='sm'
+                // size='sm'
                 variant='outline'
                 colorScheme='red'>
                 Cancel
@@ -194,7 +196,7 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
                 type='submit'
                 isLoading={isLoading}
                 loadingText='Adding...'
-                size='sm'
+                // size='sm'
                 variant='solid'
                 colorScheme='green'>
                 {note ? 'Update' : 'Add'}

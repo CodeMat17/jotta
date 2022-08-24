@@ -78,7 +78,7 @@ function NoteCard({ note }) {
       <Divider my='4' />
       <Text
         fontSize='lg'
-        color={note.is_completed ? isCompletedTextColor : textColor}
+        color={note.is_completed ? isCompletedTextColor : ''}
         noOfLines='2'>
         {note.desc}
       </Text>
