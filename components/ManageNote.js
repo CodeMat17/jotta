@@ -75,7 +75,7 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
         .from('notes')
         .insert([{ title, desc, user_id: user.id }]);
       supabaseError = error;
-      // reload();
+      reload();
     }
 
     setLoading(false);

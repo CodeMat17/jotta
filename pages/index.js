@@ -16,16 +16,16 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { MdHourglassEmpty, MdOutlineAddCircle } from 'react-icons/md';
+import { MdOutlineAddCircle } from 'react-icons/md';
+import {MdHourglassEmpty} from 'react-icons/md'
 import ManageNote from '../components/ManageNote';
 import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
 
-export default function Home({ notes }) {
-console.log('notes -', notes);
+export default function Home() {
 
   const user = supabase.auth.user();
-  // const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [note, setNote] = useState(null);
   const [isFetching, setFetching] = useState(false);
 
@@ -39,23 +39,25 @@ console.log('notes -', notes);
     }
   }, [user, router]);
 
-  // const getNotes = async () => {
-  //   await supabase
-  //     .from('notes')
-  //     .select('*')
-  //     .eq('user_id', user?.id)
-  //     .order('id', { ascending: false })
-  //     .then(({ data, error }) => {
-  //       if (!error) {
-  //         setNotes(data);
-  //       }
-  //     });
-  //   setFetching(false);
-  // };
+ 
 
-  // useEffect(() => {
-  //   getNotes();
-  // }, []);
+  const getNotes = async () => {
+    await supabase
+      .from('notes')
+      .select('*')
+      .eq('user_id', user?.id)
+      .order('id', { ascending: false })
+      .then(({ data, error }) => {
+        if (!error) {
+          setNotes(data);
+        }
+      });
+    setFetching(false);
+  };
+
+  useEffect(() => {
+    getNotes();
+  }, []);
 
   const openHandler = (clickedNote) => {
     setNote(clickedNote);
@@ -78,7 +80,7 @@ console.log('notes -', notes);
           isOpen={isOpen}
           onClose={onClose}
           initialRef={initialRef}
-          // reload={getNotes}
+          reload={getNotes}
           note={note}
           setNote={setNote}
         />
@@ -112,36 +114,36 @@ console.log('notes -', notes);
           </Container>
         ) : (
           <>
-            {/* {!notes ? (
-              <Container centerContent mt='20' maxW='xs'>
-                <MdHourglassEmpty color='gray' size='28' />
-                <Square
-                  letterSpacing='2px'
-                  mt='2'
-                  color='gray'
-                  fontSize='20'
-                  textAlign='center'>
-                  You do not have any note at the moment.
-                </Square>
-              </Container>
-            ) : ( */}
-              <SimpleGrid
-                columns={[1, 1, 2, 3]}
-                gap={[4]}
-                maxW='6xl'
-                mx='auto'
-                mb='12'
-                px='4'>
-                {notes &&
-                  notes.map((note) => (
-                    <NoteCard
-                      key={note.id}
-                      note={note}
-                      openHandler={openHandler}
-                    />
-                  ))}
-              </SimpleGrid>
-            {/* )} */}
+              {notes <= 0 ? (
+                <Container centerContent mt='20' maxW='xs'>
+                  <MdHourglassEmpty color='gray' size='28' />
+                  <Square
+                    letterSpacing='2px'
+                    mt='2'
+                    color='gray'
+                    fontSize='20'
+                    textAlign='center'>
+                    You do not have any note at the moment.
+                  </Square>
+                </Container>
+              ) : (
+                <SimpleGrid
+                  columns={[1, 1, 2, 3]}
+                  gap={[4]}
+                  maxW='6xl'
+                  mx='auto'
+                  mb='12'
+                  px='4'>
+                  {notes &&
+                    notes.map((note) => (
+                      <NoteCard
+                        key={note.id}
+                        note={note}
+                        openHandler={openHandler}
+                      />
+                    ))}
+                </SimpleGrid>
+              )}
           </>
         )}
       </main>
@@ -161,18 +163,18 @@ console.log('notes -', notes);
   );
 }
 
-export async function getStaticProps() {
-  const user = supabase.auth.user();
-  const { data: notes } = await supabase
-    .from('notes')
-    .select('*')
-    // .eq('user_id', user?.id)
-    .order('id', { ascending: false });
+// export async function getStaticProps() {
+//   const user = supabase.auth.user();
+//   const { data } = await supabase
+//     .from('notes')
+//     .select('*')
+//     // .eq('user_id', user?.id)
+//     .order('id', { ascending: false });
 
-  return {
-    props: {
-      notes,
-    },
-    // revalidate: 86400,
-  };
-}
+//   return {
+//     props: {
+//       data,
+//     },
+//     // revalidate: 86400,
+//   };
+// }
