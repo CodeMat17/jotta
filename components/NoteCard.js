@@ -98,7 +98,7 @@ function NoteCard({ note }) {
         noOfLines='2'>
         {note.desc}
       </Text>
-      <ReactMarkdown>{note.desc}</ReactMarkdown>
+      {/* <ReactMarkdown>{note.desc}</ReactMarkdown> */}
       <Divider my='4' />
       <HStack>
         <Spacer />
