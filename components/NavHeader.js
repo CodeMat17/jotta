@@ -115,15 +115,15 @@ function NavHeader({ toggleColorMode, colorMode }) {
 
             {showLogoutBtn && (
               <HStack spacing='4'>
-                <Popover>
+                <Popover >
                   <PopoverTrigger>
                     <IconButton isRound variant='ghost'>
                       <CgProfile size='42' color='green' />
                     </IconButton>
                   </PopoverTrigger>
-                  <PopoverContent>
+                  <PopoverContent py='6' px='2'>
                     <PopoverArrow />
-                    <PopoverCloseButton />
+                    <PopoverCloseButton size='lg' />
                     <PopoverHeader>
                       <CgProfile size='50' />
                       <Text pt='2' fontSize='18' maxW='xs'> {user.email}</Text>

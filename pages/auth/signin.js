@@ -53,7 +53,7 @@ function Signin() {
           {/* <Divider border='2px' /> */}
         </Box>
         <Text textAlign='center' fontSize='xl'>
-          Save your notes, appointments and other schedules with ENoter.
+          Save your notes, appointments and other schedules with JOTTA.
         </Text>
 
         {error && (
