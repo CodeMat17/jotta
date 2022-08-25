@@ -117,7 +117,7 @@ function NavHeader({ toggleColorMode, colorMode }) {
               <HStack spacing='4'>
                 <Popover>
                   <PopoverTrigger>
-                    <IconButton isRound>
+                    <IconButton isRound variant='ghost'>
                       <CgProfile size='42' color='green' />
                     </IconButton>
                   </PopoverTrigger>
