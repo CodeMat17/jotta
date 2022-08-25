@@ -73,7 +73,7 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main>
+      <Container m='0' p='0' h='100vh'>
         <ManageNote
           isOpen={isOpen}
           onClose={onClose}
@@ -142,12 +142,11 @@ export default function Home() {
                       />
                     ))}
                 </SimpleGrid>
-                <Footer />
               </>
             )}
           </>
         )}
-      </main>
+      </Container>
       <HStack
         mb=''
         zIndex='80'
@@ -166,6 +165,7 @@ export default function Home() {
           <MdOutlineAddCircle size='50' color='green' />
         </IconButton>
       </HStack>
+      <Footer />
     </div>
   );
 }
