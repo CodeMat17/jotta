@@ -3,7 +3,7 @@ import React from 'react'
 
 function Footer() {
     return (
-      <Box bg='black' py='8' px='4'>
+      <Box bg='black' py='8' px='4' w='100%'>
         <Container maxW='6xl' mx='auto'>
           <Heading fontSize='20'>JOTTA</Heading>
           <Text fontSize='sm' textColor='gray'>

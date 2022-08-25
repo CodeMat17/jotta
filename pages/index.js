@@ -17,6 +17,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { MdHourglassEmpty, MdOutlineAddCircle } from 'react-icons/md';
+import Footer from '../components/Footer';
 import ManageNote from '../components/ManageNote';
 import NoteCard from '../components/NoteCard';
 import { supabase } from '../lib/supabaseClient';
@@ -124,27 +125,36 @@ export default function Home() {
                 </Square>
               </Container>
             ) : (
-              <SimpleGrid
-                columns={[1, 1, 2, 3]}
-                gap={[4]}
-                maxW={['3xl', '3xl', '3xl', '6xl']}
-                mx='auto'
-                mb='12'
-                px='4'>
-                {notes &&
-                  notes.map((note) => (
-                    <NoteCard
-                      key={note.id}
-                      note={note}
-                      openHandler={openHandler}
-                    />
-                  ))}
-              </SimpleGrid>
+              <>
+                <SimpleGrid
+                  columns={[1, 1, 2, 3]}
+                  gap={[4]}
+                  maxW={['3xl', '3xl', '3xl', '6xl']}
+                  mx='auto'
+                  mb='12'
+                  px='4'>
+                  {notes &&
+                    notes.map((note) => (
+                      <NoteCard
+                        key={note.id}
+                        note={note}
+                        openHandler={openHandler}
+                      />
+                    ))}
+                </SimpleGrid>
+                <Footer />
+              </>
             )}
           </>
         )}
       </main>
-      <HStack position='fixed' bottom='20' right={[8, 8, 12]} maw='6xl'>
+      <HStack
+        mb=''
+        zIndex='80'
+        position='fixed'
+        bottom='20'
+        right={[8, 8, 12]}
+        maw='6xl'>
         <Spacer />
         <IconButton
           onClick={onOpen}

@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }) {
     <ChakraProvider theme={customTheme}>
       <NavHeader />
       <Component {...pageProps} />
-      <Footer />
+     {/* <Footer /> */}
     </ChakraProvider>
   );
 }

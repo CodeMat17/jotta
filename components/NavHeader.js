@@ -89,7 +89,7 @@ function NavHeader({ toggleColorMode, colorMode }) {
   };
 
   return (
-    <Box as='nav' bg='#40df6d' position='sticky' top='0' zIndex='50'>
+    <Box as='nav' bg='#40df6d' position='sticky' top='0' zIndex='50' w='100%'>
       <HStack
         aria-label='Site navigation'
         pl='4'
@@ -126,11 +126,11 @@ function NavHeader({ toggleColorMode, colorMode }) {
                     <PopoverCloseButton />
                     <PopoverHeader>
                       <CgProfile size='50' />
-                      <Text pt='2'> {user.email}</Text>
+                      <Text pt='2' fontSize='18' maxW='xs'> {user.email}</Text>
                     </PopoverHeader>
-                    <PopoverBody>
-                      <VStack align='start'>
-                        <Text>Total no. of notes: {totalNotes.length}</Text>
+                    <PopoverBody py='12'>
+                      <VStack align='start' fontSize='18'>
+                        <Text >Total no. of notes: {totalNotes.length}</Text>
                         <Text>No. of in-use notes: {notCompleted.length}</Text>
                         <Text>
                           No. of completed notes: {isCompleted.length}
