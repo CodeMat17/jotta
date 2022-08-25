@@ -22,6 +22,8 @@ import {
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+// import SimpleMDE from 'react-simplemde-editor';
+// import 'easymde/dist/easymde.min.css';
 
 function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
   const [title, setTitle] = useState('');
@@ -30,6 +32,10 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isError, setIsError] = useState(false);
+
+   const onChange = (desc) => {
+     setDesc(desc);
+   };
 
   const toast = useToast();
   const router = useRouter();
@@ -170,6 +176,7 @@ function ManageNote({ isOpen, onClose, initialRef, reload, note }) {
                 </FormHelperText>
               )}
             </FormControl>
+            {/* <SimpleMDE value={desc} onChange={onChange} /> */}
 
             {note && (
               <FormControl mt='4'>

@@ -73,7 +73,7 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Container m='0' p='0' h='100vh'>
+      <Box  m='0' p='0' h='100vh'>
         <ManageNote
           isOpen={isOpen}
           onClose={onClose}
@@ -146,7 +146,7 @@ export default function Home() {
             )}
           </>
         )}
-      </Container>
+      </Box>
       <HStack
         mb=''
         zIndex='80'

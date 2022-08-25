@@ -12,6 +12,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import ReactMarkdown from 'react-markdown';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';
@@ -97,6 +98,7 @@ function NoteCard({ note }) {
         noOfLines='2'>
         {note.desc}
       </Text>
+      <ReactMarkdown>{note.desc}</ReactMarkdown>
       <Divider my='4' />
       <HStack>
         <Spacer />
