@@ -165,7 +165,7 @@ export default function Home() {
           <MdOutlineAddCircle size='50' color='green' />
         </IconButton>
       </HStack>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

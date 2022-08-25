@@ -9,6 +9,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
@@ -18,12 +19,24 @@ dayjs.extend(relativeTime);
 
 function NoteCard({ note }) {
   const router = useRouter();
+  const toast = useToast();
 
   const { isOpen, onClose, onToggle } = useDisclosure();
 
   const isCompletedTextColor = useColorModeValue('gray.400', 'gray.600');
   const grayText = useColorModeValue('gray.400', 'gray.500');
   const textColor = useColorModeValue('gray.800', 'gray.300');
+
+  const getDetails = () => {
+    router.push(`/note/${note.id}`);
+    toast({
+      title: 'Please wait...',
+      status: 'loading',
+      position: 'top',
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Box
@@ -87,9 +100,7 @@ function NoteCard({ note }) {
       <Divider my='4' />
       <HStack>
         <Spacer />
-        <Button
-          onClick={() => router.push(`/note/${note.id}`)}
-          colorScheme='green'>
+        <Button onClick={getDetails} colorScheme='green'>
           {note.is_completed ? 'Edit/Remove' : 'See Details'}
         </Button>
       </HStack>
