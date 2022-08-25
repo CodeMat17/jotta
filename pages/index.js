@@ -65,10 +65,10 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Enoter | Home</title>
+        <title>JOTTA | Home</title>
         <meta
           name='description'
-          content='Enoter is an e note app for taking notes electronically.'
+          content='JOTTA is an e jotter app for keeping notes, appointments and schedules.'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
